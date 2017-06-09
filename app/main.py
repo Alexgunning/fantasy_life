@@ -1,26 +1,32 @@
-from pyfiglet import Figlet
 import os
-from flask import Flask
+from flask import Flask, redirect, url_for, request, render_template
+from pymongo import MongoClient
 
 app = Flask(__name__)
 
-font = Figlet(font="starwars")
+client = MongoClient("mongodb://127.0.0.1:27017")
+db = client.tododb
 
-@app.route("/")
-def main():
-    # get the message from the environmental variable $MESSAGE
-    # or fall back to the string "no message specified"
-    message = os.getenv("MESSAGE", "no message specified")
 
-    # render plain text nicely in HTML
-    html_text = font.renderText(message)\
-            .replace(" ","&nbsp;")\
-            .replace(">","&gt;")\
-            .replace("<","&lt;")\
-            .replace("\n","<br>")
+@app.route('/')
+def todo():
+    _items = db.tododb.find()
+    items = [item for item in _items]
+    itemsStr = str(items)
+    return itemStr
+    
 
-    # use a monospace font so everything lines up as expected
-    return "<html><body style='font-family: mono;'>" + html_text + "</body></html>"
+
+@app.route('/new', methods=['POST'])
+def new():
+
+    item_doc = {
+        'name': request.form['name'],
+        'description': request.form['description']
+    }
+    db.tododb.insert_one(item_doc)
+
+    return "Inserted"
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    app.run(host='0.0.0.0', debug=True, port=80)
