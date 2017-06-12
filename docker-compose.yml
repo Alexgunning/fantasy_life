@@ -2,14 +2,6 @@ version: "3"
 services:
   web:
     build: .
-    #deploy:
-      #replicas: 5
-      #resources:
-        #limits:
-          #cpus: "0.1"
-          #memory: 50M
-      #restart_policy:
-        #condition: on-failure
     ports:
       - "80:80"
     networks:
@@ -17,11 +9,11 @@ services:
     links:
       - mongo
   mongo:
-    image: 'mongo:3.4.1'
+    image: 'mongo'
     ports:
       - '27017:27017'
-    volumes:
-      - './mongo:/data/db'
+    #volumes:
+      #- './mongo:/data/db'
 networks:
   webnet:
 

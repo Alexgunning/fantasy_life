@@ -1,2 +1,5 @@
 venv/
+env/
+mongo/
 *.swp
+*.DS_STORE

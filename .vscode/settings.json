@@ -1,0 +1,9 @@
+{
+    "python.pythonPath": "/Users/alexandergunning/fantasy_life/env/bin/python3",
+    "python.autoComplete.extraPaths": [
+        "/Users/alexandergunning/fantasy_life/env/lib/python3.5",
+        "/Users/alexandergunning/fantasy_life/env/lib/python3.5/site-packages"
+    ],
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4
+}

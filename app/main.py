@@ -1,32 +1,30 @@
-import os
-from flask import Flask, redirect, url_for, request, render_template
-from pymongo import MongoClient
+"""Server html for the main fantasy page"""
+from flask import Flask, render_template, jsonify
+from flask_pymongo import PyMongo
 
 app = Flask(__name__)
+app.config['MONGO_DBNAME'] = "fantasy"
+mongo = PyMongo(app)
 
-client = MongoClient("mongodb://127.0.0.1:27017")
-db = client.tododb
-
+print("config setup\n\n")
 
 @app.route('/')
-def todo():
-    _items = db.tododb.find()
-    items = [item for item in _items]
-    itemsStr = str(items)
-    return itemStr
-    
+def hello():
+    """Hello World Rout"""
+    return "hello world"
 
-
-@app.route('/new', methods=['POST'])
-def new():
-
-    item_doc = {
-        'name': request.form['name'],
-        'description': request.form['description']
-    }
-    db.tododb.insert_one(item_doc)
-
-    return "Inserted"
+@app.route('/nba', methods=['GET'])
+def get_nba_data():
+    """Get nba data"""
+    print("\nIn NBAn\n")
+    nba = mongo.db.nba
+    players = mongo.db.players
+    output = []
+    for team in nba.find():
+        name = players.find_one({"_id": team["_id"]})["name"]
+        output.append({'name': name, 'team' : team['team'], 'won' : team['won'], 'lost' :\
+        team['lost'], 'win_precentage' : team['win_precentage']})
+    return render_template('layout.html', teams=output)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True, port=80)
+    app.run(host='0.0.0.0', debug=True, port=8000)
