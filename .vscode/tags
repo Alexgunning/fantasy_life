@@ -8,25 +8,35 @@ CLIENT	../app/scraper/mlb.py	/^CLIENT = MongoClient()$/;"	kind:variable	line:5
 CLIENT	../app/scraper/nba.py	/^CLIENT = MongoClient()$/;"	kind:variable	line:5
 DB	../app/scraper/mlb.py	/^DB = CLIENT.fantasy$/;"	kind:variable	line:6
 DB	../app/scraper/nba.py	/^DB = CLIENT.fantasy$/;"	kind:variable	line:6
-Flask	../app/main.py	/^from flask import Flask, render_template, jsonify$/;"	kind:namespace	line:2
+Flask	../app/main.py	/^from flask import Flask, render_template$/;"	kind:namespace	line:2
 MongoClient	../app/scraper/mlb.py	/^from flask_pymongo import MongoClient$/;"	kind:namespace	line:3
 MongoClient	../app/scraper/nba.py	/^from flask_pymongo import MongoClient$/;"	kind:namespace	line:3
+MongoClient	../app/scraper/pga.py	/^from flask_pymongo import MongoClient$/;"	kind:namespace	line:3
 PyMongo	../app/main.py	/^from flask_pymongo import PyMongo$/;"	kind:namespace	line:3
 app	../app/main.py	/^app = Flask(__name__)$/;"	kind:variable	line:5
+client	../app/scraper/pga.py	/^client = MongoClient()$/;"	kind:variable	line:6
 create_mlb_db	../app/scraper/mlb.py	/^def create_mlb_db():$/;"	kind:function	line:10
 create_nba_db	../app/scraper/nba.py	/^def create_nba_db():$/;"	kind:function	line:22
+create_pga_db	../app/scraper/pga.py	/^def create_pga_db():$/;"	kind:function	line:23
 create_player_db	../app/scraper/nba.py	/^def create_player_db():$/;"	kind:function	line:10
+create_player_db	../app/scraper/pga.py	/^def create_player_db():$/;"	kind:function	line:11
+db	../app/scraper/pga.py	/^db = client.fantasy$/;"	kind:variable	line:7
+get_mlb_data	../app/main.py	/^def get_mlb_data():$/;"	kind:function	line:29
 get_nba_data	../app/main.py	/^def get_nba_data():$/;"	kind:function	line:17
 get_standings	../app/scraper/mlb.py	/^def get_standings():$/;"	kind:function	line:25
 get_standings	../app/scraper/nba.py	/^def get_standings():$/;"	kind:function	line:37
+get_standings	../app/scraper/pga.py	/^def get_standings():$/;"	kind:function	line:38
 hello	../app/main.py	/^def hello():$/;"	kind:function	line:12
-jsonify	../app/main.py	/^from flask import Flask, render_template, jsonify$/;"	kind:namespace	line:2
+html	../app/scraper/pga.py	/^from lxml import html$/;"	kind:namespace	line:4
 main.py	../app/main.py	1;"	kind:file	line:1
 mlb.py	../app/scraper/mlb.py	1;"	kind:file	line:1
 mongo	../app/main.py	/^mongo = PyMongo(app)$/;"	kind:variable	line:7
 nba.py	../app/scraper/nba.py	1;"	kind:file	line:1
-render_template	../app/main.py	/^from flask import Flask, render_template, jsonify$/;"	kind:namespace	line:2
+pga.py	../app/scraper/pga.py	1;"	kind:file	line:1
+render_template	../app/main.py	/^from flask import Flask, render_template$/;"	kind:namespace	line:2
 requests	../app/scraper/mlb.py	/^import requests$/;"	kind:namespace	line:2
 requests	../app/scraper/nba.py	/^import requests$/;"	kind:namespace	line:2
+requests	../app/scraper/pga.py	/^import requests$/;"	kind:namespace	line:2
 update_standings	../app/scraper/mlb.py	/^def update_standings():$/;"	kind:function	line:30
 update_standings	../app/scraper/nba.py	/^def update_standings():$/;"	kind:function	line:42
+update_standings	../app/scraper/pga.py	/^def update_standings():$/;"	kind:function	line:67

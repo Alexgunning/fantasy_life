@@ -1,0 +1,16 @@
+<!doctype html>
+<head>
+<title></title>
+<!--<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">-->
+</head>
+<body>
+	<div class=page>
+		<h1>{{ table_name }}</h1>
+		<table>
+			{% for golf in golfers %}
+				<tr><td>{{ golf.name }}</td><td>{{ golf.golfer }}</td><td>{{ golf.ranking }}</td>\</tr>
+			{% endfor %}
+		</table>
+	</div>
+</body>
+</html>
