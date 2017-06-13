@@ -1,6 +1,6 @@
 venv/
 env/
 mongo/
-vscode/.ropeproject/
+.vscode/.ropeproject/
 *.swp
 *.DS_STORE

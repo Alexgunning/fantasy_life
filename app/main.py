@@ -48,7 +48,7 @@ def get_pga_data():
         name = players.find_one({"_id": golfer["_id"]})["name"]
         output.append({'name': name, 'golfer' : golfer['golfer'], 'ranking' : golfer['ranking']})
 
-    return render_template('pga_layout.html', golfers=output, table_name="PGA")
+    return render_template('ranking_layout.html', golfers=output, table_name="PGA")
 
 # get_pga_data()
 
