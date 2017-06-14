@@ -20,9 +20,8 @@ def get_nba_data():
     players = mongo.db.players
     output = []
     for team in nba.find().sort("win_precentage", -1):
-        name = players.find_one({"_id": team["_id"]})["name"]
-        output.append({'name': name, 'team' : team['team'], 'won' : team['won'], 'lost' :\
-        team['lost'], 'win_precentage' : team['win_precentage']})
+        team['user_name'] = players.find_one({"_id": team["_id"]})["name"]
+        output.append(team)
     return render_template('layout.html', teams=output, table_name="NBA")
 
 @app.route('/mlb', methods=['GET'])
@@ -30,12 +29,11 @@ def get_mlb_data():
     """Get mlb data"""
     mlb = mongo.db.mlb
     players = mongo.db.players
-    output = []
+    teams = []
     for team in mlb.find().sort("win_precentage", -1):
-        name = players.find_one({"_id": team["_id"]})["name"]
-        output.append({'name': name, 'team' : team['team'], 'won' : team['won'], 'lost' :\
-        team['lost'], 'win_precentage' : team['win_precentage']})
-    return render_template('layout.html', teams=output, table_name="MLB")
+        team['user_name'] = players.find_one({"_id": team["_id"]})["name"]
+        teams.append(team)
+    return render_template('layout.html', teams=teams, table_name="MLB")
 
 @app.route('/pga', methods=['GET'])
 def get_pga_data():
@@ -45,8 +43,8 @@ def get_pga_data():
     output = []
     for golfer in pga.find().sort("ranking", 1):
         #Get player name asscoiated with golfer
-        name = players.find_one({"_id": golfer["_id"]})["name"]
-        output.append({'name': name, 'golfer' : golfer['golfer'], 'ranking' : golfer['ranking']})
+        golfer['user_name'] = players.find_one({"_id": golfer["_id"]})["name"]
+        output.append(golfer)
 
     return render_template('ranking_layout.html', golfers=output, table_name="PGA")
 

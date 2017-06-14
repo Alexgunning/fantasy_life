@@ -1,4 +1,4 @@
-!doctype html>
+<!doctype html>
 <head>
 <title>NBA</title>
 <!--<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">-->
@@ -9,7 +9,7 @@
 		<table>
 			<tr><th>person</th><th>team</th><th>wins</th><th>losses</th><th>win pct</th></tr>
 			{% for team in teams %}
-				<tr><td>{{ team.name }}</td><td>{{ team.team }}</td><td>{{ team.won }}</td><td>{{ team.lost }}</td><td>{{ team.win_precentage }}</td></tr>
+				<tr><td>{{ team.user_name }}</td><td>{{ team.team }}</td><td>{{ team.won }}</td><td>{{ team.lost }}</td><td>{{ team.win_precentage }}</td></tr>
 			{% endfor %}
 		</table>
 	</div>
