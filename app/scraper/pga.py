@@ -43,7 +43,7 @@ def get_player_ranking():
             'web_id': web_id
         }, {
             '$set': {
-                'ranking': ranking
+                'rank': ranking
             }
         })
 
