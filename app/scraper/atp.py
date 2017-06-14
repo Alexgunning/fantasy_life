@@ -13,17 +13,18 @@ print("runnning atp")
 
 def create_atp_db():
     """Makes a new database for the nba"""
-    player_view_names = ["Andy Murray", "Rafael Nadal", "Stan Wawrinka", "Novak Djok\
-    ovic", "Dominic Thiem", "Grigor Dimitrov", "David Goffin", "Tomas Berdych",\
+    player_view_names = ["Andy Murray", "Rafael Nadal", "Stan Wawrinka", "Novak Djokovic",\
+    "Dominic Thiem", "Grigor Dimitrov", "David Goffin", "Tomas Berdych",\
     "Gael Monfils", "Jack Sock", "Nick Kyrgios", "Albert Ramos-Vinolas"]
 
     player_web_names = [player.lower().replace(' ', '-') for player in player_view_names]
 
     players = db.players
     atp = db.atp
+    atp.drop()
     users = players.find()
     for player_web_name, player_view_name, users in zip(player_web_names, player_view_names, users):
-        data = {"associtaed_player_id": users['_id'], "player_web_name": player_web_name, "player_view_name" : player_view_name}
+        data = {"associated_player_id": users['_id'], "player_web_name": player_web_name, "name" : player_view_name}
         _ = atp.insert(data)
 
 
@@ -45,6 +46,7 @@ def get_player_ranking():
     table = tree.find_class("tablehead")
     player_links = [player_link for player_link in table[0].iterlinks() if player_link[1] == 'href']
 
+    counter = 0
     for link in player_links:
         player_link_name = link[2].split('/')[-1]
         if player_link_name in tennis_players:
@@ -56,8 +58,10 @@ def get_player_ranking():
                     'rank': rank
                 }
             })
-            print(player_link_name)
+            counter += 1
+            if counter == len(tennis_players):
+                break
 
+create_atp_db()
 get_player_ranking()
-# create_atp_db()
 

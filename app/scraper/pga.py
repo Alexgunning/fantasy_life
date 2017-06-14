@@ -63,7 +63,7 @@ def scrape_player_ids():
             href = str(link[2])
             digits = re.findall(r"\d+", href)[0]
             pga.update_one({
-                'golfer': name
+                'player_name': name
             }, {
                 '$set': {
                     'web_id': digits

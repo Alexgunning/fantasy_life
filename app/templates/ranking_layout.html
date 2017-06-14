@@ -7,8 +7,8 @@
 	<div class=page>
 		<h1>{{ table_name }}</h1>
 		<table>
-			{% for golf in golfers %}
-				<tr><td>{{ golf.user_name }}</td><td>{{ golf.golfer }}</td><td>{{ golf.rank }}</td>\</tr>
+			{% for player in players %}
+				<tr><td>{{ player.user_name }}</td><td>{{ player.name }}</td><td>{{ player.rank }}</td>\</tr>
 			{% endfor %}
 		</table>
 	</div>
