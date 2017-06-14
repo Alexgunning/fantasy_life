@@ -38,7 +38,6 @@ def get_player_ranking():
     tree = html.fromstring(res.content)
 
     atp = db.atp
-    players = db.players
 
     tennis_players = [str(tennis_player["player_web_name"]) for tennis_player in atp.find()]
 
@@ -49,7 +48,14 @@ def get_player_ranking():
     for link in player_links:
         player_link_name = link[2].split('/')[-1]
         if player_link_name in tennis_players:
-            print(link[0].getparent().getprevious().text_content())
+            rank  = link[0].getparent().getprevious().text_content()
+            atp.update_one({
+                'player_web_name': player_link_name
+            }, {
+                '$set': {
+                    'rank': rank
+                }
+            })
             print(player_link_name)
 
 get_player_ranking()
