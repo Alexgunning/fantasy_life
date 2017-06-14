@@ -55,27 +55,24 @@ def scrape_player_ids():
     golfers = [str(golfers["golfer"]) for golfers in pga.find()]
     table = tree.find_class("details-table-wrap")
 
-    #TODO CLEAN UP wasted loop cycles
-    #Go through each link in table
-    for link in table:
-        counter = 0
-        for j in link.iterlinks():
-            #Get the text content and sanitize it
-            name = str((j[0].text_content())).strip().replace('\xa0', ' ')
-            if name in golfers:
-                href = str(j[2])
-                digits = re.findall(r"\d+", href)[0]
-                pga.update_one({
-                    'golfer': name
-                }, {
-                    '$set': {
-                        'web_id': digits
-                    }
-                })
-                #Break from loop if all golfers updated
-                counter += 1
-                if counter == len(golfers):
-                    break
+    counter = 0
+    for link in table[0].iterlinks():
+        #Get the text content and sanitize it
+        name = str((link[0].text_content())).strip().replace('\xa0', ' ')
+        if name in golfers:
+            href = str(link[2])
+            digits = re.findall(r"\d+", href)[0]
+            pga.update_one({
+                'golfer': name
+            }, {
+                '$set': {
+                    'web_id': digits
+                }
+            })
+            #Break from loop if all golfers updated
+            counter += 1
+            if counter == len(golfers):
+                break
 
 scrape_player_ids()
 get_player_ranking()
