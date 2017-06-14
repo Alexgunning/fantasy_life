@@ -1,14 +1,14 @@
 <!doctype html>
 <head>
-<title></title>
+<title>{{ table_name }}</title>
 <!--<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">-->
 </head>
 <body>
 	<div class=page>
 		<h1>{{ table_name }}</h1>
 		<table>
-			{% for player in players %}
-				<tr><td>{{ player.user_name }}</td><td>{{ player.name }}</td><td>{{ player.rank }}</td>\</tr>
+			{% for table_row in table_data %}
+				<tr><td>{{ table_row.user_name }}</td><td>{{ table_row.name }}</td><td>{{ table_row.rank }}</td>\</tr>
 			{% endfor %}
 		</table>
 	</div>

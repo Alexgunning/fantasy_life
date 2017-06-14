@@ -19,9 +19,10 @@ def create_pga_db():
 
     players = db.players
     pga = db.pga
+    pga.drop()
     cursor = players.find()
     for golfer, document in zip(golfers, cursor):
-        data = {"_id": document['_id'], "golfer": golfer}
+        data = {"_id": document['_id'], "name": golfer}
         _ = pga.insert(data)
 
 
@@ -52,7 +53,7 @@ def scrape_player_ids():
     res = requests.get("http://www.pgatour.com/stats/stat.186.html")
     tree = html.fromstring(res.content)
     pga = db.pga
-    golfers = [str(golfers["golfer"]) for golfers in pga.find()]
+    golfers = [str(golfers["name"]) for golfers in pga.find()]
     table = tree.find_class("details-table-wrap")
 
     counter = 0
@@ -63,7 +64,7 @@ def scrape_player_ids():
             href = str(link[2])
             digits = re.findall(r"\d+", href)[0]
             pga.update_one({
-                'player_name': name
+                'name': name
             }, {
                 '$set': {
                     'web_id': digits
@@ -74,6 +75,7 @@ def scrape_player_ids():
             if counter == len(golfers):
                 break
 
+create_pga_db()
 scrape_player_ids()
 get_player_ranking()
 

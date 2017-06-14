@@ -50,7 +50,7 @@ def get_player_ranking():
     for link in player_links:
         player_link_name = link[2].split('/')[-1]
         if player_link_name in tennis_players:
-            rank  = link[0].getparent().getprevious().text_content()
+            rank = int(link[0].getparent().getprevious().text_content())
             atp.update_one({
                 'player_web_name': player_link_name
             }, {

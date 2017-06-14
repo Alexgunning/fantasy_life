@@ -40,26 +40,26 @@ def get_pga_data():
     """Get pga data"""
     pga = mongo.db.pga
     players = mongo.db.players
-    output = []
+    table_data = []
     for golfer in pga.find().sort("rank", 1):
         #Get player name asscoiated with golfer
         golfer['user_name'] = players.find_one({"_id": golfer["_id"]})["name"]
-        output.append(golfer)
+        table_data.append(golfer)
 
-    return render_template('ranking_layout.html', golfers=output, table_name="PGA")
+    return render_template('ranking_layout.html', table_data=table_data, table_name="PGA")
 
 @app.route('/atp', methods=['GET'])
 def get_atp_data():
     """Get atp data"""
     atp = mongo.db.atp
     players = mongo.db.players
-    output = []
+    table_data = []
     for tennis_player in atp.find().sort("rank", 1):
         #Get player name asscoiated with golfer
         tennis_player['user_name'] = players.find_one({"_id": tennis_player["associated_player_id"]})["name"]
-        output.append(tennis_player)
+        table_data.append(tennis_player)
 
-    return render_template('ranking_layout.html', players=output, table_name="ATP")
+    return render_template('ranking_layout.html', table_data=table_data, table_name="ATP")
 
 # get_pga_data()
 
