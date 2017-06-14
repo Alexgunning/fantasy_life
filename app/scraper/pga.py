@@ -1,4 +1,4 @@
-"""Pull down NBA data"""
+"""Pull down PGA data"""
 import re
 import requests
 from flask_pymongo import MongoClient
