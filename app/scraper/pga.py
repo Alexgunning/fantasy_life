@@ -1,3 +1,4 @@
+#!/bin/python
 """Pull down PGA data"""
 import re
 import requests
@@ -13,61 +14,42 @@ print("runnning pga")
 
 def create_pga_db():
     """Makes a new database for the nba"""
-    golfers = ["Dustin Johnson", "Rory McIlroy", "Jason Day", "Sergio Garcia",\
+    player_view_names = ["Dustin Johnson", "Rory McIlroy", "Jason Day", "Sergio Garcia",\
      "Jordan Spieth", "Rickie Fowler", "Justin Rose", "Adam Scott",\
      "Paul Casey", "Matt Kuchar", "Kevin Kisner", "Phil Mickelson"]
 
+    player_web_names = [player.replace(' ', '\xa0') for player in player_view_names]
+
     players = db.players
     pga = db.pga
+
+    #Drop old collection if making a new one
     pga.drop()
-    cursor = players.find()
-    for golfer, document in zip(golfers, cursor):
-        data = {"_id": document['_id'], "name": golfer}
+    users = players.find()
+    for player_web_name, player_view_name, users in zip(player_web_names, player_view_names, users):
+        data = {"associated_player_id": users['_id'], "player_web_name": player_web_name, "name" : player_view_name}
         _ = pga.insert(data)
 
 
-#Get the json data for the progam
-def get_player_ranking():
-    """Get the json data for the progam"""
-    pga = db.pga
-    res = requests.get("http://www.pgatour.com/stats/stat.186.html")
-    tree = html.fromstring(res.content)
-
-    web_ids = [str(golfers["web_id"]) for golfers in pga.find()]
-
-    #Get the first child of the talbe row element aand string the whitespace
-    for web_id in web_ids:
-        web_id_path = "playerStatsRow%s"%web_id
-        ranking = tree.get_element_by_id(web_id_path)[0].text_content().strip()
-        ranking = int(ranking)
-        pga.update_one({
-            'web_id': web_id
-        }, {
-            '$set': {
-                'rank': ranking
-            }
-        })
-
-def scrape_player_ids():
+def get_pga_data():
     """Get the pga tour webpage id's"""
     res = requests.get("http://www.pgatour.com/stats/stat.186.html")
     tree = html.fromstring(res.content)
     pga = db.pga
-    golfers = [str(golfers["name"]) for golfers in pga.find()]
-    table = tree.find_class("details-table-wrap")
+    golfers = [str(golfers["player_web_name"]) for golfers in pga.find()]
+    table = tree.find_class("table-styled")
 
     counter = 0
     for link in table[0].iterlinks():
         #Get the text content and sanitize it
-        name = str((link[0].text_content())).strip().replace('\xa0', ' ')
-        if name in golfers:
-            href = str(link[2])
-            digits = re.findall(r"\d+", href)[0]
+        player_link_name = str(link[0].text_content())
+        if player_link_name in golfers:
+            rank = int(link[0].getparent().getprevious().getprevious().text_content())
             pga.update_one({
-                'name': name
+                'player_web_name': player_link_name
             }, {
                 '$set': {
-                    'web_id': digits
+                    'rank': rank
                 }
             })
             #Break from loop if all golfers updated
@@ -76,7 +58,6 @@ def scrape_player_ids():
                 break
 
 create_pga_db()
-scrape_player_ids()
-get_player_ranking()
+get_pga_data()
 
 print("done")

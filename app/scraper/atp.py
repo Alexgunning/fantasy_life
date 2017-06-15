@@ -27,12 +27,6 @@ def create_atp_db():
         data = {"associated_player_id": users['_id'], "player_web_name": player_web_name, "name" : player_view_name}
         _ = atp.insert(data)
 
-
-#Get the f data for the progam
-def get_ranking(element):
-    """Get the ranking from the correspoding link element"""
-
-
 def get_player_ranking():
     """get the json data for the progam"""
     res = requests.get("http://www.espn.com/tennis/rankings")

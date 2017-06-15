@@ -43,7 +43,7 @@ def get_pga_data():
     table_data = []
     for golfer in pga.find().sort("rank", 1):
         #Get player name asscoiated with golfer
-        golfer['user_name'] = players.find_one({"_id": golfer["_id"]})["name"]
+        golfer['user_name'] = players.find_one({"_id": golfer["associated_player_id"]})["name"]
         table_data.append(golfer)
 
     return render_template('ranking_layout.html', table_data=table_data, table_name="PGA")
