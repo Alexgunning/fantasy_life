@@ -1,6 +1,5 @@
 #!/bin/python
 """Pull down PGA data"""
-import re
 import requests
 from flask_pymongo import MongoClient
 from lxml import html
