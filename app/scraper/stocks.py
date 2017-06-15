@@ -1,5 +1,6 @@
 import datetime
 import requests
+import re
 from flask_pymongo import MongoClient
 
 client = MongoClient()
@@ -17,29 +18,32 @@ api_key = "hssemltznjvcx2shmdgt"
 
 def create_stock_db():
     """Make new database for stocks"""
-    ticker_symbols = ["A", "AAPL", "C", "GOOG", "HOG", "HPQ", "INTC", "KO", "LUV", "MMM", "MSFT"]
-    #"T", "TGT", "TXN", "WMT"]
+    ticker_symbols = ["A", "AAPL", "C", "FB", "GOOG", "HOG", "HPQ", "INTC", "KO", "LUV", "MMM", "MSFT"]
 
     players = db.players
     stock = db.stock
     stock.drop()
     users = players.find()
-    for ticker_symbols, users in zip(player_web_names, player_view_names, users):
-        data = {"associated_player_id": users['_id'], "ticker_symbols": ticker_symbols}
+    for ticker_symbol, users in zip(ticker_symbols, users):
+        data = {"associated_player_id": users['_id'], "ticker_symbol": ticker_symbol}
         _ = stock.insert(data)
 
 def get_stock_metadata():
     """Get stock metadata (Full company names"""
-    ticker_symbols = ["A", "AAPL", "C", "GOOG", "HOG", "HPQ", "INTC", "KO", "LUV", "MMM", "MSFT"]
-    #"T", "TGT", "TXN", "WMT"]
-
-    players = db.players
     stock = db.stock
-    stock.drop()
-    users = players.find()
-    for ticker_symbols, users in zip(player_web_names, player_view_names, users):
-        data = {"associated_player_id": users['_id'], "ticker_symbols": ticker_symbols}
-        _ = stock.insert(data)
+
+    ticker_symbols = [stock['ticker_symbol'] for stock in stock.find()]
+    for ticker_symbol in ticker_symbols:
+        query =  "https://www.quandl.com/api/v3/datasets/WIKI/%s/metadata.json?api_key=HsseMLtznjVcx2sHmDGt"%ticker_symbol
+        stock_name = requests.get(query).json()['dataset']['name']
+        stock_name = stock_name.split('(')[0]
+        stock.update_one({
+            'ticker_symbol': ticker_symbol
+            }, {
+                '$set': {
+                    'stock_name': stock_name
+                }
+            })
 
 def stock_data(stock):
     """Get stock data based on stock ticker"""
@@ -61,8 +65,8 @@ def stock_data(stock):
     return {"current_price" : current_price, "start_price" : start_price, "delta" : delta}
 
 
-
-
+create_stock_db()
+get_stock_metadata()
 
 #print(res['data'])
 # A – Agilent Technologies
