@@ -2,5 +2,6 @@ venv/
 env/
 mongo/
 .vscode/.ropeproject/
+.vscode/tags
 *.swp
 *.DS_STORE
