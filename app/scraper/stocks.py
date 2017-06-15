@@ -29,19 +29,19 @@ def create_stock_db():
         _ = stock.insert(data)
 
 def get_stock_metadata():
-    """Get stock metadata (Full company names"""
+    """Get stock metadata (Full company names)"""
     stock = db.stock
-
-    ticker_symbols = [stock['ticker_symbol'] for stock in stock.find()]
+    print('alex')
+    ticker_symbols = [stocks['ticker_symbol'] for stocks in stock.find()]
     for ticker_symbol in ticker_symbols:
         query =  "https://www.quandl.com/api/v3/datasets/WIKI/%s/metadata.json?api_key=HsseMLtznjVcx2sHmDGt"%ticker_symbol
         stock_name = requests.get(query).json()['dataset']['name']
-        stock_name = stock_name.split('(')[0]
+        shortened_stock_name = stock_name.split('(')[0]
         stock.update_one({
             'ticker_symbol': ticker_symbol
             }, {
                 '$set': {
-                    'stock_name': stock_name
+                    'stock_name': shortened_stock_name
                 }
             })
 
@@ -62,7 +62,22 @@ def stock_data(stock):
             start_price = float(day[0][4])
             break
     delta = (current_price-start_price)/start_price
-    return {"current_price" : current_price, "start_price" : start_price, "delta" : delta}
+    return {"ticker_symbol": stock, "current_price" : current_price, "start_price" : start_price, "delta" : delta}
+
+def update_stock_data():
+    stock = db.stock
+    ticker_symbols = [stocks['ticker_symbol'] for stocks in stock.find()]
+    stock_data = [stock_data(ticker_symbol) for ticker_symbol in ticker_symbols] 
+    for stock_price in stock_data:
+        stock.update_one({
+            'ticker_symbol': stock_price['ticker_symbol']
+            }, {
+                '$set': {
+                    'current_price': stock_price['current_price'],
+                    'start_price': stock_price['start_price'],
+                    'delta': stock_price['delta']
+            }
+            })
 
 
 create_stock_db()
