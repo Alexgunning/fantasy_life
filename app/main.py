@@ -61,6 +61,19 @@ def get_atp_data():
 
     return render_template('ranking_layout.html', table_data=table_data, table_name="ATP")
 
+@app.route('/stocks', methods=['GET'])
+def get_stock_data():
+    """Get  data"""
+    stocks = mongo.db.stocks
+    players = mongo.db.players
+    table_data = []
+    for stock in stocks.find().sort("delta", -1):
+        #Get player name asscoiated with the stock
+        stock['user_name'] = players.find_one({"_id": stock["associated_player_id"]})["name"]
+        table_data.append(stock)
+
+    return render_template('stocks_template.html', stocks=table_data, table_name="Stocks")
+
 # get_pga_data()
 
 if __name__ == "__main__":

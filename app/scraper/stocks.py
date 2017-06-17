@@ -25,16 +25,16 @@ def create_stock_db():
      "MMM", "MSFT", "WMT"]
 
     players = db.players
-    stock = db.stock
-    stock.drop()
+    stocks = db.stocks
+    stocks.drop()
     users = players.find()
     for ticker_symbol, users in zip(ticker_symbols, users):
         data = {"associated_player_id": users['_id'], "ticker_symbol": ticker_symbol}
-        _ = stock.insert(data)
+        _ = stocks.insert(data)
 
 def get_stock_metadata():
     """Get stock metadata (Full company names)"""
-    stock = db.stock
+    stock = db.stocks
     ticker_symbols = [stocks['ticker_symbol'] for stocks in stock.find()]
 
     for ticker_symbol in ticker_symbols:
@@ -42,7 +42,6 @@ def get_stock_metadata():
         %(ticker_symbol, api_key)
         stock_name = requests.get(query).json()['dataset']['name']
         shortened_stock_name = stock_name.split('(')[0].strip()
-        print(shortened_stock_name)
         stock.update_one({
             'ticker_symbol': ticker_symbol
             }, {
@@ -72,7 +71,7 @@ def stock_data(stock):
 
 def update_stock_data():
     """Get all off the stocks data and update the database"""
-    stock = db.stock
+    stock = db.stocks
     ticker_symbols = [stocks['ticker_symbol'] for stocks in stock.find()]
     stock_info = [stock_data(ticker_symbol) for ticker_symbol in ticker_symbols]
     for stock_price in stock_info:
@@ -87,8 +86,8 @@ def update_stock_data():
             })
 
 
-# create_stock_db()
-# get_stock_metadata()
+create_stock_db()
+get_stock_metadata()
 update_stock_data()
 
 #print(res['data'])

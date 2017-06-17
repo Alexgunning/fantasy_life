@@ -1,0 +1,17 @@
+<!doctype html>
+<head>
+<title>STOCKS</title>
+<!--<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">-->
+</head>
+<body>
+	<div class=page>
+		<h1>{{ table_name }}</h1>
+		<table>
+			<tr><th>person</th><th>Stock</th><th>Ticker Symbol</th><th>Current</th><th>2016 Q3 Start</th><th>Delta</th></tr>
+			{% for stock in stocks %}
+				<tr><td>{{ stock.user_name }}</td><td>{{ stock.stock_name }}</td><td>{{ stock.ticker_symbol }}</td><td>{{ stock.current_price }}</td><td>{{ stock.start_price }}</td><td>{{ stock.delta }}</td></tr>
+			{% endfor %}
+		</table>
+	</div>
+</body>
+</html>
