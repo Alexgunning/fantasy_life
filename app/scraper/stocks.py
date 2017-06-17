@@ -2,7 +2,6 @@
 import datetime
 import requests
 from flask_pymongo import MongoClient
-import time
 
 client = MongoClient()
 db = client.fantasy
@@ -39,7 +38,8 @@ def get_stock_metadata():
     ticker_symbols = [stocks['ticker_symbol'] for stocks in stock.find()]
 
     for ticker_symbol in ticker_symbols:
-        query = "https://www.quandl.com/api/v3/datasets/WIKI/%s/metadata.json?api_key=%s"%(ticker_symbol,api_key)
+        query = "https://www.quandl.com/api/v3/datasets/WIKI/%s/metadata.json?api_key=%s"\
+        %(ticker_symbol, api_key)
         stock_name = requests.get(query).json()['dataset']['name']
         shortened_stock_name = stock_name.split('(')[0].strip()
         print(shortened_stock_name)
@@ -55,8 +55,6 @@ def stock_data(stock):
     """Get stock data based on stock ticker"""
 
     query = "https://www.quandl.com/api/v3/datasets/WIKI/%s/data.json?api_key=%s"%(stock, api_key)
-    print(query)
-
     daily_results = requests.get(query).json()['dataset_data']['data']
     #Get the most recent price (first in array)
     #Closing price is 5th element
