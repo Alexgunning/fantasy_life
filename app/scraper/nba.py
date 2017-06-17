@@ -53,6 +53,6 @@ def update_standings():
                     }
                 })
 
-create_player_db()
-create_nba_db()
+# create_player_db()
+# create_nba_db()
 update_standings()
