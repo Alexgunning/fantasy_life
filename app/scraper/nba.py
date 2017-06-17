@@ -13,11 +13,8 @@ def create_player_db():
     people = ["Bryan Hee", "Jake Doering", "Matt Sweeney", "Kyle Mayer", "Brian St\
     ern", "Alex Gunning", "Tim Erdmann", "Brian Clifford", "Sam Levitt", "Armen Vop\
     ain", "Aman Kiflezgi", "Joe Kovach"]
-    for i, person in enumerate(people):
-        i += 1
-        dude = {"name": person}
-        print(dude)
-        _ = players.insert(dude).inserted_id
+    for person in people:
+        _ = players.insert({"name": person})
 
 def create_nba_db():
     """Makes a new database for the nba"""
@@ -56,4 +53,6 @@ def update_standings():
                     }
                 })
 
+create_player_db()
+create_nba_db()
 update_standings()
