@@ -20,7 +20,7 @@ def get_nba_data():
     players = mongo.db.players
     output = []
     for team in nba.find().sort("win_precentage", -1):
-        team['user_name'] = players.find_one({"_id": team["_id"]})["name"]
+        team['user_name'] = players.find_one({"_id": team["associated_player_id"]})["name"]
         output.append(team)
     return render_template('layout.html', teams=output, table_name="NBA")
 
@@ -31,7 +31,7 @@ def get_mlb_data():
     players = mongo.db.players
     teams = []
     for team in mlb.find().sort("win_precentage", -1):
-        team['user_name'] = players.find_one({"_id": team["_id"]})["name"]
+        team['user_name'] = players.find_one({"_id": team["associated_player_id"]})["name"]
         teams.append(team)
     return render_template('layout.html', teams=teams, table_name="MLB")
 

@@ -32,7 +32,6 @@ def create_nba_db():
         data = {"associated_player_id": user['_id'], "team": team}
         _ = nba.insert(data)
 
-
 #Get the json data for the progam
 def get_standings():
     """Get the json data for the progam"""
@@ -56,6 +55,6 @@ def update_standings():
                     }
                 })
 
-# create_player_db()
+#create_player_db()
 # create_nba_db()
 update_standings()

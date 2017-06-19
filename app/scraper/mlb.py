@@ -15,9 +15,9 @@ def create_mlb_db():
     teams = ['Twins', 'Indians', 'Tigers', 'Royals', 'White Sox', 'Angels', \
     'Red Sox', 'Rays', 'Orioles', 'Blue Jays', 'Astros', 'Yankees']
 
-    cursor = players.find()
-    for team, document in zip(teams, cursor):
-        data = {"_id": document['_id'], "team": team}
+    users = players.find()
+    for team, user in zip(teams, users):
+        data = {"associated_player_id": user['_id'], "team": team}
         _ = mlb.insert(data)
 
 
@@ -44,5 +44,5 @@ def update_standings():
                     }
                 })
 
-# create_mlb_db()
+create_mlb_db()
 update_standings()
