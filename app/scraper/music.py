@@ -15,32 +15,69 @@ def create_music_db():
     """Makes a new database for the nba"""
     players = db.players
     musicians = db.musicians
+    musicians.drop()
 
     artists = ['Bruno Mars', 'Ed Sheeran', 'Kendrick Lamar', 'Future', 'Lil Uzi Vert',\
-     'James Arthur', 'Julia Michaels', 'Imagine Dragons', 'Sam Hunt', 'Childish Gambino',\
-     'Shawn Mende s', 'Brett Young']
+     'James Arthur', 'Julia Michaels', 'Imagine Dragons', 'Sam Hunt', 'Taylor Swift',\
+     'Katy Perry', 'Justin Bieber']
 
     cursor = players.find()
     for artist, document in zip(artists, cursor):
         _ = musicians.insert({"_id": document['_id'], "artist": artist})
 
+class artist():
+    def __init__(self, name):
+        self.name = name
+        self.top_ten = 0
+        self.number_one = 0
+        self.score = 0
 
 def get_billboard_charts():
     """Get the music data for the progam"""
+
+    musicians = db.musicians
+    artists = [artist(singer['artist']) for singer in musicians.find()]
+    for singer in artists:
+        print(singer.name)
+
     chart = billboard.ChartData('hot-100')
-    print(chart.date)
-    print(type(chart.date))
-    chart_date = chart.date.split('-')
-    chart_datetime = datetime.date(year=int(chart_date[0]), month=int(chart_date[1]),\
-    day=int(chart_date[2]))
-    print(chart_datetime)
-    print(type(chart_datetime))
-    prev = chart.previousDate
-    print(prev)
 
-    for i in range(20):
-        song = chart[i]  # Get no. 1 song on chart
-        # print(song.artist)
+    #TODO CLEAN UP must be a better way to iterate through these loops
+    #Iterate through charts until fantasy start date
+    while True:
+        #Get the top ten songs from the chart
+        top_ten = chart[:10]
+        #Go through all of the songs in the top ten
+        #Searching for artists is complicated by songs having multiple artists
+        #must search song name by artists we are looking for
+        for i, song in enumerate(top_ten):
+            for singer in artists:
+                if singer.name in song.artist:
+                    if i == 0:
+                        singer.number_one += 1
+                    singer.top_ten += 1
 
-# create_music_db()
+        chart_date = chart.previousDate.split('-')
+        chart_datetime = datetime.date(year=int(chart_date[0]), month=int(chart_date[1]),\
+        day=int(chart_date[2]))
+        if chart_datetime < FANTASY_LIFE_START_DATE:
+            break
+        else:
+            chart = billboard.ChartData('hot-100', date=chart.previousDate)
+
+    for singer in artists:
+        singer.score = (singer.number_one * 2) + singer.top_ten
+
+    for singer in artists:
+        musicians.update_one({
+            'artist': singer.name
+            }, {
+                '$set': {
+                    'number_one': singer.number_one,
+                    'top_ten': singer.top_ten,
+                    'score': singer.score
+                }
+            })
+
+create_music_db()
 get_billboard_charts()
