@@ -22,8 +22,8 @@ def create_music_db():
      'Katy Perry', 'Justin Bieber']
 
     cursor = players.find()
-    for artist, document in zip(artists, cursor):
-        _ = musicians.insert({"_id": document['_id'], "artist": artist})
+    for artist, user in zip(artists, cursor):
+        _ = musicians.insert({"associated_player_id": user['_id'], "artist": artist})
 
 class artist():
     def __init__(self, name):

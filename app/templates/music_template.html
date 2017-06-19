@@ -1,0 +1,17 @@
+<!doctype html>
+<head>
+<title>MUSIC</title>
+<!--<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">-->
+</head>
+<body>
+	<div class=page>
+		<h1>{{ table_name }}</h1>
+		<table>
+			<tr><th>person</th><th>Artist</th><th>Number One</th><th>Top Ten</th><th>Score</th></tr>
+			{% for artist in artists %}
+				<tr><td>{{ artist.user_name }}</td><td>{{ artist.artist }}</td><td>{{ artist.number_one }}</td><td>{{ artist.top_ten }}</td><td>{{ artist.score }}</td></tr>
+			{% endfor %}
+		</table>
+	</div>
+</body>
+</html>

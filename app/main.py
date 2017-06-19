@@ -74,7 +74,18 @@ def get_stock_data():
 
     return render_template('stocks_template.html', stocks=table_data, table_name="Stocks")
 
-# get_pga_data()
+@app.route('/music', methods=['GET'])
+def get_music_data():
+    """Get  data"""
+    musicians = mongo.db.musicians
+    players = mongo.db.players
+    table_data = []
+    for artist in musicians.find().sort("score", -1):
+        #Get player name asscoiated with the artist
+        artist['user_name'] = players.find_one({"_id": artist["associated_player_id"]})["name"]
+        table_data.append(artist)
+
+    return render_template('music_template.html', artists=table_data, table_name="Music")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, port=8000)
