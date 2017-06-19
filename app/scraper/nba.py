@@ -2,14 +2,14 @@
 import requests
 from flask_pymongo import MongoClient
 
-CLIENT = MongoClient()
-DB = CLIENT.fantasy
+client = MongoClient()
+db = client.fantasy
 
 print("runnning")
 
 def create_player_db():
     """Makes a new database with everyones name"""
-    players = DB.players
+    players = db.players
     players.drop()
 
     people = ["Bryan Hee", "Jake Doering", "Matt Sweeney", "Kyle Mayer", "Brian Stern",\
@@ -20,16 +20,16 @@ def create_player_db():
 
 def create_nba_db():
     """Makes a new database for the nba"""
-    players = DB.players
-    nba = DB.nba
+    players = db.players
+    nba = db.nba
     nba.drop()
 
     teams = ["Celtics", "Cavaliers", "Raptors", "Wizards", "Hawks", "Bucks", \
     "Pacers", "Bulls", "Heat", "Pistons", "Hornets", "Knicks"]
 
-    cursor = players.find()
-    for team, document in zip(teams, cursor):
-        data = {"_id": document['_id'], "team": team}
+    users = players.find()
+    for team, user in zip(teams, users):
+        data = {"associated_player_id": user['_id'], "team": team}
         _ = nba.insert(data)
 
 
@@ -41,7 +41,7 @@ def get_standings():
 
 def update_standings():
     """Update the NBA standings in the database"""
-    nba = DB.nba
+    nba = db.nba
     teams = [team["team"] for team in nba.find()]
     standings = get_standings()
     for team in standings:
