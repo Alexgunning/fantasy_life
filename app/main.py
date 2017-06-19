@@ -61,6 +61,19 @@ def get_atp_data():
 
     return render_template('ranking_layout.html', table_data=table_data, table_name="ATP")
 
+@app.route('/nascar', methods=['GET'])
+def get_nascar_data():
+    """Get nascar data"""
+    nascar = mongo.db.nascar
+    players = mongo.db.players
+    table_data = []
+    for driver in nascar.find().sort("rank", 1):
+        #Get player name asscoiated with golfer
+        driver['user_name'] = players.find_one({"_id": driver["associated_player_id"]})["name"]
+        table_data.append(driver)
+
+    return render_template('ranking_layout.html', table_data=table_data, table_name="NASCAR")
+
 @app.route('/stocks', methods=['GET'])
 def get_stock_data():
     """Get  data"""
