@@ -28,8 +28,8 @@ def create_stock_db():
     stocks = db.stocks
     stocks.drop()
     users = players.find()
-    for ticker_symbol, users in zip(ticker_symbols, users):
-        data = {"associated_player_id": users['_id'], "ticker_symbol": ticker_symbol}
+    for ticker_symbol, user in zip(ticker_symbols, users):
+        data = {"associated_player_id": user['_id'], "ticker_symbol": ticker_symbol}
         _ = stocks.insert(data)
 
 def get_stock_metadata():
