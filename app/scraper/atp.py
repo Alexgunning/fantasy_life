@@ -21,9 +21,9 @@ def create_atp_db():
     players = db.players
     atp = db.atp
     atp.drop()
-    users = players.find()
-    for player_web_name, player_view_name, users in zip(player_web_names, player_view_names, users):
-        data = {"associated_player_id": users['_id'], "player_web_name": player_web_name, "name" : player_view_name}
+    user = players.find()
+    for player_web_name, player_view_name, user in zip(player_web_names, player_view_names, user):
+        data = {"associated_player_id": user['_id'], "player_web_name": player_web_name, "name" : player_view_name}
         _ = atp.insert(data)
 
 def get_player_ranking():
