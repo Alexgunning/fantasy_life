@@ -10,9 +10,11 @@ print("runnning")
 def create_player_db():
     """Makes a new database with everyones name"""
     players = DB.players
-    people = ["Bryan Hee", "Jake Doering", "Matt Sweeney", "Kyle Mayer", "Brian St\
-    ern", "Alex Gunning", "Tim Erdmann", "Brian Clifford", "Sam Levitt", "Armen Vop\
-    ain", "Aman Kiflezgi", "Joe Kovach"]
+    players.drop()
+
+    people = ["Bryan Hee", "Jake Doering", "Matt Sweeney", "Kyle Mayer", "Brian Stern",\
+    "Alex Gunning", "Tim Erdmann", "Brian Clifford", "Sam Levitt", "Armen Vopain",\
+    "Aman Kiflezgi", "Joe Kovach"]
     for person in people:
         _ = players.insert({"name": person})
 
@@ -20,6 +22,7 @@ def create_nba_db():
     """Makes a new database for the nba"""
     players = DB.players
     nba = DB.nba
+    nba.drop()
 
     teams = ["Celtics", "Cavaliers", "Raptors", "Wizards", "Hawks", "Bucks", \
     "Pacers", "Bulls", "Heat", "Pistons", "Hornets", "Knicks"]
