@@ -1,7 +1,6 @@
 """Pull down music data"""
-import requests
-import billboard
 import datetime
+import billboard
 from flask_pymongo import MongoClient
 
 FANTASY_LIFE_START_DATE = datetime.date(year=2016, month=8, day=1)
@@ -17,15 +16,16 @@ def create_music_db():
     musicians = db.musicians
     musicians.drop()
 
-    artists = ['Bruno Mars', 'Ed Sheeran', 'Kendrick Lamar', 'Future', 'Lil Uzi Vert',\
+    singers = ['Bruno Mars', 'Ed Sheeran', 'Kendrick Lamar', 'Future', 'Lil Uzi Vert',\
      'James Arthur', 'Julia Michaels', 'Imagine Dragons', 'Sam Hunt', 'Taylor Swift',\
      'Katy Perry', 'Justin Bieber']
 
     cursor = players.find()
-    for artist, user in zip(artists, cursor):
-        _ = musicians.insert({"associated_player_id": user['_id'], "artist": artist})
+    for singer, user in zip(singers, cursor):
+        _ = musicians.insert({"associated_player_id": user['_id'], "artist": singer})
 
-class artist():
+class Artist():
+    """Class for storing the data of each artist"""
     def __init__(self, name):
         self.name = name
         self.top_ten = 0
@@ -36,7 +36,7 @@ def get_billboard_charts():
     """Get the music data for the progam"""
 
     musicians = db.musicians
-    artists = [artist(singer['artist']) for singer in musicians.find()]
+    artists = [Artist(singer['artist']) for singer in musicians.find()]
     for singer in artists:
         print(singer.name)
 
