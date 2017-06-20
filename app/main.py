@@ -24,6 +24,17 @@ def get_nba_data():
         output.append(team)
     return render_template('layout.html', teams=output, table_name="NBA")
 
+@app.route('/nfl', methods=['GET'])
+def get_nfl_data():
+    """Get nfl data"""
+    nfl = mongo.db.nfl
+    players = mongo.db.players
+    output = []
+    for team in nfl.find().sort("win_precentage", -1):
+        team['user_name'] = players.find_one({"_id": team["associated_player_id"]})["name"]
+        output.append(team)
+    return render_template('layout_team_ties.html', teams=output, table_name="NFL")
+
 @app.route('/mlb', methods=['GET'])
 def get_mlb_data():
     """Get mlb data"""
