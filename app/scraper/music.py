@@ -57,9 +57,8 @@ def get_billboard_charts():
                         singer.number_one += 1
                     singer.top_ten += 1
 
-        chart_date = chart.previousDate.split('-')
-        chart_datetime = datetime.date(year=int(chart_date[0]), month=int(chart_date[1]),\
-        day=int(chart_date[2]))
+        year, month, day = chart.previousDate.split('-')
+        chart_datetime = datetime.date(year=int(year), month=int(month), day=int(day))
         if chart_datetime < FANTASY_LIFE_START_DATE:
             break
         else:
